@@ -1,45 +1,19 @@
-class HolbertonClass {
-    constructor(size, location) {
-      this._size = this.validateNumber(size, 'Size');
-      this._location = this.validateString(location, 'Location');
+export default class HolbertonClass {
+  constructor(size, location) {
+    if (typeof size !== 'number') {
+      throw new TypeError('Size must be a number');
+    } else if (typeof location !== 'string') {
+      throw new TypeError('Location must be a string');
     }
-  
-    // Getter for size
-    get size() {
-      return this._size;
-    }
-  
-    // Getter for location
-    get location() {
-      return this._location;
-    }
-  
-    // Custom Number casting
-    valueOf() {
-      return this._size;
-    }
-  
-    // Custom String casting
-    toString() {
-      return this._location;
-    }
-  
-    // Helper function to validate numbers
-    validateNumber(value, fieldName) {
-      if (typeof value !== 'number' || isNaN(value)) {
-        throw new TypeError(`${fieldName} must be a valid number.`);
-      }
-      return value;
-    }
-  
-    // Helper function to validate strings
-    validateString(value, fieldName) {
-      if (typeof value !== 'string' || value.trim() === '') {
-        throw new TypeError(`${fieldName} must be a non-empty string.`);
-      }
-      return value.trim();
-    }
+
+    this._size = size;
+    this._location = location;
   }
-  
-  export default HolbertonClass;
-  
+
+  [Symbol.toPrimitive](hint) {
+    if (hint === 'number') {
+      return this._size;
+    }
+    return this._location;
+  }
+}

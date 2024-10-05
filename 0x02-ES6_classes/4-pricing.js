@@ -1,56 +1,50 @@
-import Currency from './3-currency.js';
+import Currency from './3-currency';
 
-class Pricing {
+export default class Pricing {
   constructor(amount, currency) {
-    this._amount = this.validateNumber(amount, 'Amount');
-    this._currency = this.validateCurrency(currency, 'Currency');
+    if (typeof amount !== 'number') {
+      throw new TypeError('Amount must be a number');
+    } else if (!(currency instanceof Currency)) {
+      throw new TypeError('Currency must be an instance of class Currency');
+    }
+
+    this._amount = amount;
+    this._currency = currency;
   }
 
-  // Getter for amount
   get amount() {
     return this._amount;
   }
 
-  // Setter for amount
-  set amount(newAmount) {
-    this._amount = this.validateNumber(newAmount, 'Amount');
-  }
-
-  // Getter for currency
   get currency() {
     return this._currency;
   }
 
-  // Setter for currency
-  set currency(newCurrency) {
-    this._currency = this.validateCurrency(newCurrency, 'Currency');
+  set amount(amount) {
+    if (typeof amount !== 'number') {
+      throw new TypeError('Amount must be a number');
+    }
+    this._amount = amount;
   }
 
-  // Method to display full price format
+  set currency(currency) {
+    if (!(currency instanceof Currency)) {
+      throw new TypeError('Currency must be an instance of class Currency');
+    }
+    this._currency = currency;
+  }
+
   displayFullPrice() {
     return `${this._amount} ${this._currency.name} (${this._currency.code})`;
   }
 
-  // Static method to convert price based on conversion rate
   static convertPrice(amount, conversionRate) {
+    if (typeof amount !== 'number') {
+      throw new TypeError('Amount must be a number');
+    } else if (typeof conversionRate !== 'number') {
+      throw new TypeError('Conversion rate must be a number');
+    }
+
     return amount * conversionRate;
   }
-
-  // Helper function to validate number type
-  validateNumber(value, attributeName) {
-    if (typeof value !== 'number' || isNaN(value)) {
-      throw new TypeError(`${attributeName} must be a number`);
-    }
-    return value;
-  }
-
-  // Helper function to validate Currency instance
-  validateCurrency(value, attributeName) {
-    if (!(value instanceof Currency)) {
-      throw new TypeError(`${attributeName} must be an instance of Currency`);
-    }
-    return value;
-  }
 }
-
-export default Pricing;

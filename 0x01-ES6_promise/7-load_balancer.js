@@ -1,3 +1,4 @@
+/* eslint-disable */
 export default function loadBalancer(chinaDownload, USDownload) {
-    return Promise.race([chinaDownload, USDownload]).then((x) => x);
-  }
+  return Promise.race([chinaDownload, USDownload]);
+}
